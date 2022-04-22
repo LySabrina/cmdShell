@@ -29,6 +29,6 @@ void parseInput(char* input, int* status);
  * 
  * @param input the user input
  */
-void execute(char* input);
+void execute(char** input, int *status);
 
 #endif
