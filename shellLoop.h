@@ -24,11 +24,12 @@ void startShellLoop();
  */
 void parseInput(char* input, int* status);
 
+
 /**
  * @brief Execute the commands from the user input
  * 
  * @param input the user input
  */
-void execute(char** input, int *status);
+void execute(char** input, int status);
 
 #endif
