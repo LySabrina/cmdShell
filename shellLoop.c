@@ -1,23 +1,22 @@
 #include "shellLoop.h"
 #include <stdio.h>
 
-   int status = 1;          //global variable. Used to check if we should stay in the loop to keep asking for prompts
+//IN IMPLEMENT1 branch
 const int MAX = 50;
-
  char *commands[MAX];
+
 void startShellLoop(){
     char buf[MAX];
-
+    int status = 1;
     do{
-        printf("prompt> ");
+        printf("\nprompt> ");
         fgets(buf, MAX, stdin);     //reading from stdin
+        fflush(stdin);
         parseInput(buf, &status);
         execute(commands, status);
     }
     while(status == 1);
 }
-
-//possible errors: user did not enter valid command --> execvp will check that. Then how about command? 
 
 void parseInput(char *input, int* status){
     //passed in an array which is essentially broken down to as a pointer
@@ -40,17 +39,16 @@ void parseInput(char *input, int* status){
         return ;
     }
     
-
     //For now let us assume users input one command for each stdin. Might need to do some error checking
     token = strtok(cpyWord," ");
     while(token != NULL){
         commands[i] = token;
-        printf("%s", commands[i]);
+        printf("%s here", commands[i]);      //the place where its pritning 
         i+=1;
         token = strtok(NULL, " ");
     }
     commands[i] = (char *) '\0';
-    printf("Last command: %s\n", commands[i]);
+    
 }
 
 void execute(char **input, int status){
@@ -66,7 +64,6 @@ void execute(char **input, int status){
     }
       //child process will execute the command which will replace its whole program
     else if(pid == 0){
-        printf("Child process of pid: %d of parent pid: %d now executing command: %s\n", getpid(), getppid(),*input);
         if(execvp(input[0], input) == -1){
             fprintf(stderr, "Failed to execute command\n");
         }
